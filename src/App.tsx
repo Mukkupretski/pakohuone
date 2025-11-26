@@ -9,12 +9,62 @@ function App() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
-  }}>{difficulty ? <ActualApp difficulty={difficulty}></ActualApp> : <LogIn setLoggedIn={setDifficulty}></LogIn>}</div>
+  }}><Timer></Timer>{difficulty ? <ActualApp difficulty={difficulty}></ActualApp> : <LogIn setLoggedIn={setDifficulty}></LogIn>}</div>
+}
+
+function timeString(n: number) {
+  let h = Math.floor(n / 3600).toString()
+  let m = Math.floor((n % 3600) / 60).toString()
+  let s = Math.floor(n % 60).toString()
+  if (h.length == 1) h = "0" + h;
+  if (m.length == 1) m = "0" + m;
+  if (s.length == 1) s = "0" + s;
+  return h + ":" + m + ":" + s
+}
+
+function Timer() {
+  const [time, setTime] = useState(2700)
+  const [timerOn, setTimerOn] = useState(false)
+  useEffect(() => {
+    if (!timerOn) return;
+    const interval = setInterval(() => {
+      setTime(t => t - 1)
+    }, 1000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [timerOn])
+  useEffect(() => {
+    if (time == 0) setTimerOn(false)
+  }, [time])
+  return <div style={{
+    position: "absolute",
+    top: "5px",
+    left: "5px",
+    fontSize: "30px",
+  }}>
+    <p>{timeString(time)}</p>
+    {timerOn ? <></> : <button onClick={() => {
+      setTimerOn(true)
+    }}>Aloita</button>}
+  </div>
 }
 
 const opts = ["majakka", "01212"]
 
 const vihje = "Vihje: Avain löytyy"
+
+function Morse(props: { hard: boolean }) {
+  return <>
+    {
+      props.hard ? <audio controls>
+        <source src="Morseääni.wav"></source>
+      </audio> :
+
+        <div>-.-- -.- ... ..</div>
+    }
+  </>
+}
 
 function ActualApp(props: { difficulty: number }) {
   const limboRef = useRef<HTMLDialogElement | null>(null)
@@ -43,6 +93,7 @@ function ActualApp(props: { difficulty: number }) {
         limboRef.current?.showModal()
       }}>Muistipeli 2</button>
       {simonDone && limboDone ? <p>{vihje}</p> : <></>}
+      <Morse hard={props.difficulty == 2}></Morse>
     </div>
   </>
 }
