@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+}
+
+#pelivalikko {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px
+}
+
+#pelivalikko button {
+  padding: 20px;
+  font-size: 48px;
+  border-radius: 20px;
+  border: none;
+}
