@@ -22,8 +22,10 @@ function timeString(n: number) {
   return h + ":" + m + ":" + s
 }
 
+const aika = 2700;
+
 function Timer() {
-  const [time, setTime] = useState(2700)
+  const [time, setTime] = useState(aika)
   const [timerOn, setTimerOn] = useState(false)
   useEffect(() => {
     if (!timerOn) return;
@@ -52,7 +54,7 @@ function Timer() {
 
 const opts = ["majakka", "01212"]
 
-const vihje = "Vihje: Avain löytyy"
+const vihje = "Vihje: Avain löytyy kattilasta."
 
 function Morse(props: { hard: boolean }) {
   return <>
